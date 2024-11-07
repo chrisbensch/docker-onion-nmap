@@ -1,6 +1,6 @@
 FROM golang:alpine AS builder
 
-RUN apk update && apk add --no-cache git make
+RUN apk update && apk add git make
 
 RUN git clone https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/lyrebird.git
 
@@ -22,7 +22,6 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> \
     echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' >> \
       /etc/apk/repositories && \
     apk --no-cache add --update \
-      dnsmasq \
       openssl \
       proxychains-ng \
       s6 \
@@ -48,4 +47,4 @@ RUN chmod +x /custom/bin/* && \
 
 ENV PATH="/custom/bin:${PATH}"
 ENTRYPOINT ["/custom/bin/run.sh"]
-#ENTRYPOINT ["/bin/ash"]
+
