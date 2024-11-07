@@ -1,4 +1,9 @@
-SocksPort 0.0.0.0:9050
-Log debug stderr
+SocksPort 127.0.0.1:9050
+Log notice stdout
 DataDirectory /var/lib/tor
-DNSPort 0.0.0.0:9053
+DNSPort 127.0.0.1:9053
+
+UseBridges 1
+ClientTransportPlugin obfs4 exec /usr/local/bin/lyrebird
+Bridge obfs4 82.101.246.231:443 8DD3360D2E79C52B33AED68688D2D48A488AA650 cert=mFUMQ0nb1+P/57TK/DpOilUVOq/zXV0nj7z3gPwBjnNMxT/MPS5P0nt7acEsncl1E402cw iat-mode=0
+Bridge obfs4 93.55.88.235:8081 13DDD2BED74D068AFF3EEE2B9D13C4E4D4667DDA cert=bez4elSLBpp58h6fml9ecJ/epgNWFFAE6YsXz41emzHE/YMCZaBsxPMtBcFA+JoxydDbag iat-mode=0

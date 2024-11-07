@@ -1,3 +1,12 @@
+FROM golang:alpine AS builder
+
+RUN apk update && apk add --no-cache git make
+
+RUN git clone https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transports/lyrebird.git
+
+RUN cd lyrebird && make build
+
+
 FROM alpine:edge
 
 ENV PROXYCHAINS_CONF=/etc/proxychains.conf \
@@ -5,6 +14,8 @@ ENV PROXYCHAINS_CONF=/etc/proxychains.conf \
     TOR_LOG_DIR=/var/log/s6/tor \
     DNSMASQ_CONF=/etc/dnsmasq.conf \
     DNSMASQ_LOG_DIR=/var/log/s6/dnsmasq
+
+COPY --from=builder /go/lyrebird/lyrebird /usr/local/bin/lyrebird
 
 RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> \
       /etc/apk/repositories && \
@@ -37,3 +48,4 @@ RUN chmod +x /custom/bin/* && \
 
 ENV PATH="/custom/bin:${PATH}"
 ENTRYPOINT ["/custom/bin/run.sh"]
+#ENTRYPOINT ["/bin/ash"]
