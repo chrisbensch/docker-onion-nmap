@@ -1,0 +1,5 @@
+#!/bin/sh
+# Unbound s6 service run script
+
+# Start unbound with the specified configuration
+exec unbound -d -c /etc/unbound/unbound.conf

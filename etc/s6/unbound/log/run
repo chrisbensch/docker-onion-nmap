@@ -1,0 +1,4 @@
+#!/bin/sh
+# Log script for unbound, capturing stdout and stderr
+
+exec s6-log -p /var/log/unbound
