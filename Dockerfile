@@ -1,4 +1,4 @@
-FROM golang:alpine AS builder
+FROM golang:alpine3.20 AS builder
 
 RUN apk update && apk add git make
 
@@ -7,7 +7,7 @@ RUN git clone https://gitlab.torproject.org/tpo/anti-censorship/pluggable-transp
 RUN cd lyrebird && make build
 
 
-FROM alpine:edge
+FROM alpine:3.20
 
 ENV PROXYCHAINS_CONF=/etc/proxychains.conf \
     TOR_CONF=/etc/torrc.default \
@@ -15,11 +15,11 @@ ENV PROXYCHAINS_CONF=/etc/proxychains.conf \
 
 COPY --from=builder /go/lyrebird/lyrebird /usr/local/bin/lyrebird
 
-RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> \
-      /etc/apk/repositories && \
-    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' >> \
-      /etc/apk/repositories && \
-    apk --no-cache add --update \
+#RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> \
+#      /etc/apk/repositories && \
+#    echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/community' >> \
+#      /etc/apk/repositories && \
+RUN    apk --no-cache add --update \
       openssl \
       proxychains-ng \
       s6 \
@@ -29,7 +29,8 @@ RUN echo '@edge http://dl-cdn.alpinelinux.org/alpine/edge/main' >> \
       nmap-doc \
       nmap-nping \
       nmap-ncat \
-      tor@edge && \
+#      tor@edge && \
+      tor && \
     rm -rf /var/cache/apk/*
 
 COPY etc /etc/
